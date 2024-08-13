@@ -7,14 +7,47 @@ This project reads the pdf forms and output the key and value to excel file
 - https://www.irs.gov/pub/irs-pdf/fw9.pdf
 - https://www.irs.gov/pub/irs-pdf/fw8ben.pdf
 
-## Generate mapping
+## Pre-requisites
 
-```sh
-python3 ./src/pdf-processor.py input/fw8ben.pdf --prepare-json
+- Python3 installed
+
+## Get started
+
+### Folders
+
+```yaml
+pdf-form-reader
+- input
+- output
+- mappings
+- project
+- .gitignore
+- README.md
+- requirements.txt
 ```
 
-## Run program
+### Setting up virual environment
+
+```bash
+cd pdf-form-reader
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### Installing dependencies
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+## Generate mapping
+
+```bash
+python3 project/main.py input/fw8ben.pdf --prepare-json
+```
+
+## Run project
 
 ```sh
-python3 ./src/pdf-processor.py input/fw8ben.pdf output/fw8ben.xlsx
+python3 project/main.py input/fw8ben.pdf output/fw8ben.xlsx
 ```
