@@ -11,6 +11,14 @@ This project reads the pdf forms and output the key and value to excel file
 
 - Python3 installed
 
+## Libraries used
+
+- Python3
+- PyPDF2
+- openpxl
+- flask
+- pdfplumber
+
 ## Get started
 
 ### Folders
@@ -48,6 +56,19 @@ python3 project/main.py input/fw8ben.pdf --prepare-json
 
 ## Run project
 
-```sh
+### Command line
+
+```bash
 python3 project/main.py input/fw8ben.pdf output/fw8ben.xlsx
 ```
+
+### Render UI
+
+```bash
+export FLASK_APP=project/web/app.py
+flask run
+```
+
+## Accessing UI
+
+Above command will run the application and you can access it at `http://127.0.0.1:5000`
