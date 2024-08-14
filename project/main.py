@@ -1,12 +1,10 @@
 import sys
 import json
 
-# from pdf_processor.custom_labels import load_custom_labels
-# from pdf_processor.form_extraction import extract_form_fields
-# from pdf_processor.excel_generation import generate_excel
-# from pdf_processor.json_template import prepare_json_template
-
-from pdf_processor import load_custom_labels, prepare_json_template, generate_excel, extract_form_fields
+from pdf_processor.custom_labels import load_custom_labels
+from pdf_processor.form_extraction import extract_form_fields
+from pdf_processor.excel_generation import generate_excel
+from pdf_processor.json_template import prepare_json_template
 
 def main(pdf_path, excel_path=None, prepare_json=False):
     if prepare_json:

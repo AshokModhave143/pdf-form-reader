@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Processor</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>PDF Processor</h1>
+    </header>
+
+    <main>
+      <aside class="sidebar">
+        <h2>Navigation</h2>
+        <ul>
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li>
+            <a href="{{ url_for('review_mappings') }}">Review Mappings</a>
+          </li>
+        </ul>
+      </aside>
+
+      <section class="content">{% block content %}{% endblock %}</section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 PDF Processor</p>
+    </footer>
+  </body>
+</html>

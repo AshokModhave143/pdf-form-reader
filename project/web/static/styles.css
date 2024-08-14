@@ -1,0 +1,176 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+header, footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+    margin-top: 0;
+}
+
+.sidebar ul {
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar li {
+    margin-bottom: 10px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #333;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* reeview mapping css */
+.file-list {
+    list-style-type: disc;
+    padding: 0;
+}
+
+.file-list li {
+    margin-bottom: 10px;
+}
+
+.file-list a {
+    text-decoration: none;
+    color: blue;
+}
+
+.file-list a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.container h1 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        box-shadow: none;
+    }
+    main {
+        flex-direction: column;
+    }
+    .content {
+        padding: 10px;
+    }
+}
+
+/* Table preeview styles */
+
+/* Styling the table container */
+.table-container {
+    width: 80%;
+    margin: 10px auto;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Table header styling */
+th {
+    background-color: #4CAF50; /* Green background for the header */
+    color: white;              /* White text color */
+    padding: 10px;
+    text-align: center;
+}
+
+/* Table cell styling */
+td {
+    border: 1px solid #ddd;    /* Light gray border */
+    padding: 8px;
+    text-align: left;
+    max-width: max-content;
+}
+
+/* Table row styling */
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternate row color */
+}
+
+/* Button styling */
+button {
+    background-color: #4CAF50; /* Green background */
+    color: white;              /* White text color */
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #45a049; /* Darker green background on hover */
+}
+
+/* Export file download link styling */
+a {
+    color: #4CAF50; /* Green text color */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* upload pdf */
+.upload-container {
+    border: 1px solid black;
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.upload-container form {
+    padding: 1rem;
+    background-color: lightgrey;
+}

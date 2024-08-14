@@ -25,3 +25,16 @@ def prepare_json_template(pdf_path):
             print(f"Template JSON file saved to {json_template_path}")
         else:
             print("No form fields found in the PDF.")
+
+def prepare_json_template_data(pdf_path):
+    with open(pdf_path, 'rb') as f:
+        reader = PyPDF2.PdfReader(f)
+        fields = reader.get_fields()
+
+        template_data = {}
+        if fields:
+            for field_key, field_value in fields.items():
+                field_label = field_value.get('/T', field_key)
+                template_data[field_label] = ""
+
+    return template_data

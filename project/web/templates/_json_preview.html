@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block content %}
+<h2>Mapping Preview: {{ pdf_file }}</h2>
+<form method="POST" action="{{ url_for('save_json', pdf_file=pdf_file) }}">
+  <textarea name="json_data" rows="20" cols="80">{{ json_data }}</textarea>
+  <br /><br />
+  <button type="submit">Save mappings</button>
+</form>
+{% if excel_file %}
+<p>
+  <a href="{{ url_for('download_file', filename=excel_file) }}"
+    >Download Excel Output</a
+  >
+</p>
+{% endif %} {% endblock %}

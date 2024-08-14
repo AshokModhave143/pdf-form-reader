@@ -30,6 +30,7 @@ db.sqlite3
 .nfs*
 
 ### macOS ###
+*.DS_Store*
 *.DS_Store
 .AppleDouble
 .LSOverride
