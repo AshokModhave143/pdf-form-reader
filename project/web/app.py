@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_from_directory, jsonify, redirect, url_for
+from flask import Flask, request, render_template, send_from_directory, redirect, url_for
 import os
 import json
 
@@ -6,6 +6,7 @@ from project.pdf_processor.custom_labels import load_custom_labels
 from project.pdf_processor.excel_generation import generate_excel
 from project.pdf_processor.form_extraction import extract_form_fields
 from project.pdf_processor.json_template import prepare_json_template_data
+from project.pdf_processor.file_management import get_xlsx_files
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
@@ -80,10 +81,24 @@ def export_excel():
     
     return render_template('_table_preview.html', form_data=form_data, excel_file='form_data.xlsx')
 
+@app.route('/review_downloads', methods=['GET'])
+def review_downloads():
+    # Use the get_xlsx_files function to get a list of xlsx files
+    xlsx_files = get_xlsx_files(app.config['EXCEL_FOLDER'])
+    return render_template('_downloads.html', xlsx_files=xlsx_files)
 
-@app.route('/download/<filename>')
-def download_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+@app.route('/download/excel/<filename>', methods=['GET'])
+def download_excel(filename):
+    try:
+        file_path = os.path.join(app.config['EXCEL_FOLDER'], filename)
+        if os.path.isfile(file_path):
+            return send_from_directory(
+                app.config['UPLOAD_FOLDER'], filename, as_attachment=True
+            )
+        else:
+            return "File not found", 404
+    except Exception as e:
+        return str(e), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

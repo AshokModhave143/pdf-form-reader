@@ -11,3 +11,5 @@ pytz==2024.1
 six==1.16.0
 sqlparse==0.5.1
 tzdata==2024.1
+flask==3.0.3
+Werkzeug==3.0.3
