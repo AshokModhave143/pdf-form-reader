@@ -23,15 +23,31 @@ This project reads the pdf forms and output the key and value to excel file
 
 ### Folders
 
-```yaml
-pdf-form-reader
-- input
-- output
-- mappings
-- project
-- .gitignore
-- README.md
-- requirements.txt
+```csharp
+pdf-form-reader/
+├── app.py
+├── templates/
+│   ├── _upload.html
+│   ├── _json_preview.html
+│   ├── _table_preview.html
+│   ├── _review_mappings.html
+│   ├── _downloads.html
+│   └── index.html
+│   └── base.html
+├── project/
+│   ├── pdf_processor/
+│   │   ├── custom_labels.py
+│   │   ├── excel_generation.py
+│   │   ├── form_extraction.py
+│   │   ├── json_template.py
+│   │   └── file_management.py
+│   └── __init__.py
+└── uploads/
+└── downloads/
+└── mappings/
+└── .gitignore
+└── README.md
+└── requirements.txt
 ```
 
 ### Setting up virual environment
