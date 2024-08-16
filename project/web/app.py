@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for
 import os
 from project.pdf_processor.file_management import (
     handle_index_post_request, get_mappings_files, handle_edit_mapping, 
-    save_json_template, handle_export_excel, get_xlsx_files, download_excel
+    save_json_template, handle_export_excel, get_xlsx_files, download_excel, handle_compare_files
 )
 
 app = Flask(__name__)
@@ -52,6 +52,13 @@ def download_excel(filename):
     excel_folder = app.config['EXCEL_FOLDER']
     # Call the function to download the specified Excel file
     return download_excel(filename, excel_folder)
+
+@app.route('/compare_files', methods=['GET', 'POST'])
+def compare_files():
+    if request.method == 'POST':
+        return handle_compare_files(request, app.config['UPLOAD_FOLDER'])
+    return render_template('_compare_files.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

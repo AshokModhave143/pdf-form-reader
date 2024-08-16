@@ -174,3 +174,52 @@ a:hover {
     padding: 1rem;
     background-color: lightgrey;
 }
+
+/* Compare files */
+.compare-files {
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.tables-wrapper {
+    display: flex; /* Displays tables in a row */
+    align-items: flex-start;
+}
+
+.table-container {
+    flex: 1; /* Each table takes up an equal amount of space */
+    margin-right: 10px;
+    min-width: max-content; /* Ensures a minimum width for each table */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+table th, table td {
+    white-space: nowrap;
+}
+
+
+table th {
+    background-color: #4CAF50;
+    font-weight: bold;
+}
+
+table td {
+    width: max-content;
+    min-width: 1px; /* Makes the column as wide as its content */
+}
+
+.different {
+    background-color: #f8d7da !important;
+}

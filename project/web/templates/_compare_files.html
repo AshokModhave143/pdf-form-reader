@@ -1,0 +1,85 @@
+{% extends "base.html" %} {% block content %}
+<div class="compare-files">
+  <h2>Compare PDF Files</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <label for="pdf_file1">PDF File 1:</label>
+    <input type="file" name="pdf_file1" id="pdf_file1" required />
+
+    <label for="pdf_file2">PDF File 2:</label>
+    <input type="file" name="pdf_file2" id="pdf_file2" required />
+
+    <button type="submit">Compare</button>
+  </form>
+</div>
+
+{% if form_data1 and form_data2 %}
+<div class="comparison-tables">
+  <div class="tables-wrapper">
+    <div class="table-container">
+      <h3>PDF File 1</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Label</th>
+            <th>Custom Label</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for field in form_data1.values() %}
+          <tr>
+            <td>{{ field.label }}</td>
+            <td>{{ field.customLabel }}</td>
+            <td>{{ field.value }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-container">
+      <h3>PDF File 2</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Label</th>
+            <th>Custom Label</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for field in form_data2.values() %}
+          <tr>
+            <td>{{ field.label }}</td>
+            <td>{{ field.customLabel }}</td>
+            <td>{{ field.value }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-container">
+      <h3>Comparision summary</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for field in comparison_results %}
+          <tr class="{{ 'different' if not field.is_same else '' }}">
+            <td>{{ 'Different' if not field.is_same else 'Same' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+<a href="{{ url_for('index') }}">Back to Home</a>
+{% endblock %}

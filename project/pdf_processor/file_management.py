@@ -67,3 +67,42 @@ def download_excel(filename, excel_folder):
     if os.path.isfile(file_path):
         return send_from_directory(excel_folder, filename, as_attachment=True)
     return "File not found", 404
+
+def handle_compare_files(request, uploadFolder):
+    file1 = request.files['pdf_file1']
+    file2 = request.files['pdf_file2']
+
+    file1_path = process_pdf_file(file1, uploadFolder)
+    file2_path = process_pdf_file(file2, uploadFolder)
+
+    if file1_path and file2_path:
+        form_data1, form_data2, comparison_results = compare_pdfs(file1_path, file2_path)
+        return render_template('_compare_files.html', form_data1=form_data1, form_data2=form_data2, comparison_results=comparison_results)
+    return "File not found", 404
+
+def process_pdf_file(file, upload_folder):
+    """Save the uploaded PDF file and return the saved path."""
+    if file and file.filename.endswith('.pdf'):
+        file_path = os.path.join(upload_folder, file.filename)
+        file.save(file_path)
+        return file_path
+    return None
+
+def compare_pdfs(file1_path, file2_path):
+    """Compare two PDF files and return comparison data."""
+    custom_labels1 = load_custom_labels(file1_path)
+    form_data1 = extract_form_fields(file1_path, custom_labels1)
+
+    
+    custom_labels2 = load_custom_labels(file2_path)
+    form_data2 = extract_form_fields(file2_path, custom_labels2)
+
+    comparison_results = []
+    for field1, field2 in zip(form_data1.values(), form_data2.values()):
+        comparison_results.append({
+            'field1': field1,
+            'field2': field2,
+            'is_same': field1 == field2
+        })
+    
+    return form_data1, form_data2, comparison_results
