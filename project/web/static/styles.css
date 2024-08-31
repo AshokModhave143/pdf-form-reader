@@ -181,6 +181,67 @@ a:hover {
     overflow-x: auto;
 }
 
+.compare-files form {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid lightblue;
+    padding: 1rem;
+}
+
+.file-upload label {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+input[type="file"] {
+    position: relative;
+}
+input[type="file"]::file-selector-button {
+    width: 136px;
+    color: transparent;
+    height: 2.5rem;
+    border: 1px solid #0964b0
+}
+
+input[type="file"]::before {
+    position: absolute;
+    pointer-events: none;
+    top: 0.5rem;
+    left: 1rem;
+    width: 2rem;
+    content: "";
+    background-image: url("https://img.icons8.com/?size=100&id=tWt9XCfjK1WM&format=png&color=000000");
+}
+input[type="file"]::after {
+    position: absolute;
+    pointer-events: none;
+    top: 0.8rem;
+    left: 2.5rem;
+    color: #0964b0;
+    content: "Upload file";
+}
+/* file upload button hover state */
+input[type="file"]::file-selector-button:hover {
+    background-color: #f3f4f6;
+  }
+  
+  /* file upload button active state */
+  input[type="file"]::file-selector-button:active {
+    background-color: #e5e7eb;
+  }
+
+.comparison-tables {
+    margin: 0;
+}
+.comparison-tables .no-files-selected {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10rem;
+}
 .tables-wrapper {
     display: flex; /* Displays tables in a row */
     align-items: flex-start;

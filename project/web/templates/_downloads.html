@@ -3,7 +3,7 @@
 <ul class="file-list">
   {% for file in xlsx_files %}
   <li>
-    <a href="{{ url_for('download_excel', filename=file | urlencode) }}"
+    <a href="{{ url_for('process_download_excel', filename=file | urlencode) }}"
       >{{ file }}</a
     >
   </li>

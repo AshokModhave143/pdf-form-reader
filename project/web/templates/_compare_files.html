@@ -1,22 +1,36 @@
 {% extends "base.html" %} {% block content %}
 <div class="compare-files">
-  <h2>Compare PDF Files</h2>
+  <h2>Compare Files</h2>
   <form method="POST" enctype="multipart/form-data">
-    <label for="pdf_file1">PDF File 1:</label>
-    <input type="file" name="pdf_file1" id="pdf_file1" required />
+    <div class="file-upload">
+      <label for="pdf_file">Choose a PDF File:</label>
+      <input type="file" name="pdf_file" id="pdf_file" accept=".pdf" required />
+    </div>
 
-    <label for="pdf_file2">PDF File 2:</label>
-    <input type="file" name="pdf_file2" id="pdf_file2" required />
+    <div class="file-upload">
+      <label for="excel_file">Choose a Excel File:</label>
+      <input
+        type="file"
+        name="excel_file"
+        id="excel_file"
+        accept=".xls, .xlsx"
+        required
+      />
+    </div>
 
     <button type="submit">Compare</button>
   </form>
 </div>
 
-{% if form_data1 and form_data2 %}
+{% if not pdf_form_data and not excel_json_data %}
+<div class="comparison-tables">
+  <div class="no-files-selected">No files selected</div>
+</div>
+{% endif %} {% if pdf_form_data and excel_json_data %}
 <div class="comparison-tables">
   <div class="tables-wrapper">
     <div class="table-container">
-      <h3>PDF File 1</h3>
+      <h3>PDF File: {{ pdf_file_name }}</h3>
       <table>
         <thead>
           <tr>
@@ -26,7 +40,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for field in form_data1.values() %}
+          {% for field in pdf_form_data.values() %}
           <tr>
             <td>{{ field.label }}</td>
             <td>{{ field.customLabel }}</td>
@@ -38,7 +52,7 @@
     </div>
 
     <div class="table-container">
-      <h3>PDF File 2</h3>
+      <h3>Excel File: {{ excel_file_name }}</h3>
       <table>
         <thead>
           <tr>
@@ -48,7 +62,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for field in form_data2.values() %}
+          {% for field in excel_json_data %}
           <tr>
             <td>{{ field.label }}</td>
             <td>{{ field.customLabel }}</td>

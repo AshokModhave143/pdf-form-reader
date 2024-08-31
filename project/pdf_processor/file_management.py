@@ -1,5 +1,7 @@
 import os
 import json
+import re
+import pandas as pd
 from flask import render_template, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from project.pdf_processor.custom_labels import load_custom_labels
@@ -63,46 +65,112 @@ def get_xlsx_files(excel_folder):
     return os.listdir(excel_folder)
 
 def download_excel(filename, excel_folder):
-    file_path = os.path.join(excel_folder, filename)
+    abs_folder = os.path.abspath(excel_folder)
+    file_path = os.path.join(abs_folder, filename)
     if os.path.isfile(file_path):
-        return send_from_directory(excel_folder, filename, as_attachment=True)
+        return send_from_directory(abs_folder, filename, as_attachment=True)
     return "File not found", 404
 
 def handle_compare_files(request, uploadFolder):
-    file1 = request.files['pdf_file1']
-    file2 = request.files['pdf_file2']
+    # pdf file processing
+    pdf_file = request.files['pdf_file']
+    pdf_file_path, pdf_file_name = process_file(pdf_file, uploadFolder)
 
-    file1_path = process_pdf_file(file1, uploadFolder)
-    file2_path = process_pdf_file(file2, uploadFolder)
 
-    if file1_path and file2_path:
-        form_data1, form_data2, comparison_results = compare_pdfs(file1_path, file2_path)
-        return render_template('_compare_files.html', form_data1=form_data1, form_data2=form_data2, comparison_results=comparison_results)
+    # excel file processing
+    excel_file = request.files['excel_file']
+    excel_file_path, excel_file_name = process_file(excel_file, uploadFolder)
+
+    if pdf_file_path and excel_file_path:
+        pdf_form_data, excel_json_data, comparison_results = compare_pdfs(pdf_file_path, excel_file_path)
+        return render_template('_compare_files.html', pdf_form_data=pdf_form_data, pdf_file_name=pdf_file_name, excel_json_data=excel_json_data, excel_file_name=excel_file_name, comparison_results=comparison_results)
     return "File not found", 404
 
-def process_pdf_file(file, upload_folder):
+def process_file(file, upload_folder):
     """Save the uploaded PDF file and return the saved path."""
-    if file and file.filename.endswith('.pdf'):
+    if file and (file.filename.endswith('.pdf') or (file.filename.endswith('.xls') or file.filename.endswith('.xlsx'))):
         file_path = os.path.join(upload_folder, file.filename)
         file.save(file_path)
-        return file_path
+        file_name=file.filename
+        return file_path, file_name
     return None
 
-def compare_pdfs(file1_path, file2_path):
-    """Compare two PDF files and return comparison data."""
-    custom_labels1 = load_custom_labels(file1_path)
-    form_data1 = extract_form_fields(file1_path, custom_labels1)
-
+def compare_pdfs(pdf_file_path, excel_file_path):
+    """Compare data from a PDF form file and an Excel file and return comparison data.""" 
     
-    custom_labels2 = load_custom_labels(file2_path)
-    form_data2 = extract_form_fields(file2_path, custom_labels2)
-
+    # Extract form data from the PDF file
+    pdf_form_data, pdf_json_data = handle_process_pdf(pdf_file_path)
+    
+    # Read and extract data from the Excel file
+    excel_json_data = read_excel_file(excel_file_path)
+    
     comparison_results = []
-    for field1, field2 in zip(form_data1.values(), form_data2.values()):
+    
+     # Convert pdf_form_data to a list of tuples
+    pdf_items = list(pdf_form_data.items())
+    
+    # Use zip to iterate over both pdf_items and excel_json_data
+    for (key, pdf_item), excel_item in zip(pdf_items, excel_json_data):
+        # Compare the PDF and Excel values
+        is_same = compare_items(pdf_item, excel_item)
+
+        # Append the comparison result
         comparison_results.append({
-            'field1': field1,
-            'field2': field2,
-            'is_same': field1 == field2
+            'field_name': key,
+            'pdf_value': pdf_item,
+            'excel_value': excel_item,
+            'is_same': is_same
         })
     
-    return form_data1, form_data2, comparison_results
+    # Return the data and comparison results
+    return pdf_form_data, excel_json_data, comparison_results
+
+def compare_items(pdf_item, excel_item):
+    is_same_label=pdf_item.get('label') == excel_item.get('label')
+    is_same_customLabel=pdf_item.get('customLabel') == excel_item.get('customLabel')
+    is_same_value=pdf_item.get('value') == excel_item.get('value')
+    return is_same_label and is_same_customLabel and is_same_value
+
+def handle_process_pdf(file_path):
+   if file_path:
+        custom_labels = load_custom_labels(file_path)
+        form_data = extract_form_fields(file_path, custom_labels)
+        json_data=json.dumps({'form_fields': form_data}, indent=4) 
+        return form_data, json_data
+   
+
+def to_camel_case(s):
+    words = re.split(r'[\s_]+', s.strip())
+    return words[0].lower() + ''.join(word.capitalize() for word in words[1:])
+
+
+def replace_nan_with_empty_string(data):
+    # Recursively replace NaN with an empty string in nested dictionaries/lists
+    if isinstance(data, list):
+        return [replace_nan_with_empty_string(item) for item in data]
+    elif isinstance(data, dict):
+        return {key: replace_nan_with_empty_string(value) for key, value in data.items()}
+    elif pd.isna(data):
+        return ""
+    else:
+        return data
+
+def read_excel_file(file_path):
+    try:
+        # Read the Excel file into a pandas DataFrame
+        df = pd.read_excel(file_path)
+
+        # Convert the headers to kebab-case
+        df.columns = [to_camel_case(col) for col in df.columns]
+
+         # Convert the DataFrame to a list of dictionaries (JSON format)
+        data_list = df.to_dict(orient='records')
+        
+        # Convert the list of dictionaries to JSON format
+        json_data = replace_nan_with_empty_string(data_list)
+        
+        return json_data
+    
+    except Exception as e:
+        print(f"Error reading Excel file: {e}")
+        return {}

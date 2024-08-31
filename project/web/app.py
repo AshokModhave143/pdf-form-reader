@@ -48,7 +48,7 @@ def review_downloads():
     return render_template('_downloads.html', xlsx_files=xlsx_files)
 
 @app.route('/download/excel/<filename>', methods=['GET'])
-def download_excel(filename):
+def process_download_excel(filename):
     excel_folder = app.config['EXCEL_FOLDER']
     # Call the function to download the specified Excel file
     return download_excel(filename, excel_folder)
