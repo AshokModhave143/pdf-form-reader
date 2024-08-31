@@ -81,8 +81,7 @@ python3 project/main.py input/fw8ben.pdf output/fw8ben.xlsx
 ### Render UI
 
 ```bash
-export FLASK_APP=project/web/app.py
-flask run
+python3 setup.py
 ```
 
 ## Accessing UI
