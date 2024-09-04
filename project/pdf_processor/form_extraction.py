@@ -12,10 +12,12 @@ def extract_form_fields(pdf_path, custom_labels):
                 field_type = field_value.get('/FT')
                 field_data = field_value.get('/V', '')
                 field_label = field_value.get('/T', field_name)
+                
+                
 
                 # Correctly handle checkbox values
                 if field_type == '/Btn':
-                    if field_value.get('/V') == '/1':
+                    if field_value.get('/V') == '/1' or field_value.get('/V') == '/Yes' or field_value.get('/V') == '/On':
                         field_data = 'Checked'
                     else:
                         field_data = 'Unchecked'
