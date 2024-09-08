@@ -48,18 +48,15 @@ def save_json_template(request, pdf_file, mappings_folder):
     with open(json_template_path, 'w') as json_file:
         json_file.write(json_data)
 
-def handle_export_excel(request, excel_folder):
+def handle_export_excel(request, filename, excel_folder):
     json_data = request.form['json_data']
     form_data = json.loads(json_data)['form_fields']
-    pdf_filename = request.form.get('pdf_file')
-    base_name = os.path.splitext(pdf_filename)[0]
+    base_name = os.path.splitext(filename)[0]
     excel_filename = f"{base_name}.xlsx"
 
     excel_path = os.path.join(excel_folder, excel_filename)
-
     generate_excel(form_data, excel_path)
-    
-    return render_template('_table_preview.html', form_data=form_data, excel_file=excel_filename)
+    return render_template('_table_preview.html', form_data=form_data, pdf_file=filename, excel_file=excel_filename)
 
 def get_xlsx_files(excel_folder):
     return os.listdir(excel_folder)

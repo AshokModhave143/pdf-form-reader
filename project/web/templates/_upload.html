@@ -5,8 +5,11 @@
     <label for="pdf_file">Choose a PDF file:</label>
     <input type="file" name="pdf_file" id="pdf_file" accept=".pdf" required />
     <br /><br />
+    {% if generate_mapping %}
     <button type="submit" name="prepare_json">Generate JSON Template</button>
+    {% else %}
     <button type="submit" name="process_pdf">Process PDF</button>
+    {% endif %}
   </form>
 </div>
 {% endblock %}

@@ -100,10 +100,10 @@ main {
 /* Table preeview styles */
 
 /* Styling the table container */
-.table-container {
+/* .table-container {
     width: 80%;
     margin: 10px auto;
-}
+} */
 
 /* Table styling */
 table {
@@ -252,6 +252,34 @@ input[type="file"]::file-selector-button:hover {
     margin-right: 10px;
     min-width: max-content; /* Ensures a minimum width for each table */
 }
+
+.table-container .table-action-buttons {
+    height: 50px;
+    background-color: #ecf0f2;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: end;
+}
+
+.download-excel-anchor {
+    background-color: #4CAF50;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 8px;
+    padding: 10px;
+    height: fit-content;
+}
+
+.download-excel-anchor a {
+    color: white;
+    text-decoration: none;
+    text-decoration-style: none;
+}
+
 
 table {
     width: 100%;

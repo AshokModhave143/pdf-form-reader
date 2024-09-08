@@ -1,6 +1,23 @@
 {% extends "base.html" %} {% block content %}
 <div class="table-container">
   <h2>Mapped Data Preview: {{ pdf_file }}</h2>
+  <div class="table-action-buttons">
+    <form
+      method="POST"
+      action="{{ url_for('export_excel', filename=pdf_file) }}"
+    >
+      <input type="hidden" name="json_data" value="{{ json_data }}" />
+      <button type="submit">Convert to Excel</button>
+    </form>
+
+    {% if excel_file %}
+    <div class="download-excel-anchor">
+      <a href="{{ url_for('process_download_excel', filename=excel_file) }}"
+        >Download Excel</a
+      >
+    </div>
+    {% endif %}
+  </div>
   <table>
     <thead>
       <tr>
@@ -19,16 +36,5 @@
       {% endfor %}
     </tbody>
   </table>
-  <form method="POST" action="{{ url_for('export_excel') }}">
-    <input type="hidden" name="json_data" value="{{ json_data }}" />
-    <button type="submit">Export to Excel</button>
-  </form>
-  {% if excel_file %}
-  <p>
-    <a href="{{ url_for('download_excel', filename=excel_file) }}"
-      >Download Excel Output</a
-    >
-  </p>
-  {% endif %}
 </div>
 {% endblock %}

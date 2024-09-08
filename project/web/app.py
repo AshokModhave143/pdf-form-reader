@@ -24,6 +24,12 @@ def index():
         return handle_index_post_request(request, app.config['UPLOAD_FOLDER'])
     return render_template('_upload.html')
 
+@app.route('/generate_mapping', methods=['GET', 'POST'])
+def generate_mapping():
+    if request.method == 'POST':
+        return handle_index_post_request(request, app.config['UPLOAD_FOLDER'])
+    return render_template('_upload.html', generate_mapping="true")
+
 @app.route('/review_mappings', methods=['GET'])
 def review_mappings():
     mappings_files = get_mappings_files(app.config['MAPPINGS_FOLDER'])
@@ -38,9 +44,9 @@ def save_json(pdf_file):
     save_json_template(request, pdf_file, app.config['MAPPINGS_FOLDER'])
     return redirect(url_for('index'))
 
-@app.route('/export_excel', methods=['POST'])
-def export_excel():
-    return handle_export_excel(request, app.config['EXCEL_FOLDER'])
+@app.route('/export_excel/<filename>', methods=['POST'])
+def export_excel(filename):
+    return handle_export_excel(request, filename, app.config['EXCEL_FOLDER'])
 
 @app.route('/review_downloads', methods=['GET'])
 def review_downloads():
