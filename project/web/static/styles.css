@@ -98,16 +98,8 @@ main {
 }
 
 /* Table preeview styles */
-
-/* Styling the table container */
-/* .table-container {
-    width: 80%;
-    margin: 10px auto;
-} */
-
-/* Table styling */
 table {
-    width: 100%;
+    width: auto;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
@@ -249,14 +241,13 @@ input[type="file"]::file-selector-button:hover {
 
 .table-container {
     flex: 1; /* Each table takes up an equal amount of space */
-    margin-right: 10px;
     min-width: max-content; /* Ensures a minimum width for each table */
 }
 
 .table-container .table-action-buttons {
     height: 50px;
     background-color: #ecf0f2;
-    width: 100%;
+    width: max-content;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -282,7 +273,7 @@ input[type="file"]::file-selector-button:hover {
 
 
 table {
-    width: 100%;
+    width: auto;
     border-collapse: collapse;
     table-layout: auto;
 }
